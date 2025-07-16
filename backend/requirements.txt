@@ -1,0 +1,8 @@
+fastapi
+pymysql
+uvicorn
+email_validator
+npm
+jinja2
+mysql-connector-python
+python-multipart

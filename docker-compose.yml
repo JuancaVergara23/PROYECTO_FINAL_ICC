@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  app:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: agro_db
+    networks:
+      - agro-net
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: agro_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/database/db.sql:/docker-entrypoint-initdb.d/db.sql:ro
+    networks:
+      - agro-net
+
+volumes:
+  mysql_data:
+
+networks:
+  agro-net:
