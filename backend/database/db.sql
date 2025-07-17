@@ -1,9 +1,7 @@
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-DROP DATABASE IF EXISTS db_agro;
-
-CREATE SCHEMA IF NOT EXISTS `db_agro` DEFAULT CHARACTER SET utf8 ;
+CREATE DATABASE IF NOT EXISTS `db_agro` DEFAULT CHARACTER SET utf8 ;
 USE `db_agro` ;
 
 -- -----------------------------------------------------
