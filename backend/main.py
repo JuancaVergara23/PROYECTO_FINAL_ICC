@@ -14,6 +14,7 @@ from services.datalogger_service import DataloggerService, get_datalogger_servic
 from pydantic import BaseModel
 from repositories.usuario_repository import UsuarioRepository
 from repositories.cliente_repository import ClienteRepository
+from repositories.datalogger_repository import DataloggerRepository
 
 from database.db import init_db
 from typing import List
@@ -283,6 +284,108 @@ async def mostrar_form_datalogger(nombre: str, cliente_id: int, request: Request
         "request": request,
         "cliente_id": cliente_id,
         "nombre": nombre  # se usa en el sidebar y redirect
+    })
+
+@app.get("/{nombre}/admin/ver-dataloggers")
+def ver_dataloggers_admin(nombre: str, request: Request):
+
+    usuario_repo = UsuarioRepository()
+    cliente_repo = ClienteRepository()
+    datalogger_repo = DataloggerRepository()
+
+    # Validar que el usuario con ese nombre existe y es admin (opcional)
+    admin = usuario_repo.get_by_nombre(nombre)
+    if not admin or admin.Tipo_idTipo != 1:
+        raise HTTPException(status_code=403, detail="Acceso no autorizado")
+
+    dataloggers = datalogger_repo.get_all()
+    datalogger_data = []
+
+    for d in dataloggers:
+        cliente = cliente_repo.get_by_id(d.Clientes_idClientes)
+        nombre_cliente = "Desconocido"
+        if cliente:
+            usuario = usuario_repo.get_by_id(cliente.Usuarios_idUsuarios)
+            if usuario:
+                nombre_cliente = usuario.nombre
+
+        datalogger_data.append({
+            "idDatalogger": d.idDatalogger,
+            "ubicacion": d.ubicacion,
+            "nivel_bateria": d.nivel_bateria,
+            "cliente_nombre": nombre_cliente
+        })
+
+    return templates.TemplateResponse("ver-dataloggers.html", {
+        "request": request,
+        "dataloggers": datalogger_data,
+        "nombre": nombre  # por si lo quieres usar en la plantilla
+    })
+
+@app.get("/{nombre}/admin/admin-sensores")
+async def mostrar_admin_sensores(
+    nombre: str,
+    request: Request,
+    datalogger_service: DataloggerService = Depends(get_datalogger_service),
+    cliente_service: ClienteService = Depends(get_cliente_service),
+    usuario_repo = UsuarioRepository()
+):
+    dataloggers = datalogger_service.get_all_dataloggers()
+    dataloggers_con_nombre = []
+
+    for d in dataloggers:
+        nombre_cliente = "No disponible"
+        try:
+            cliente = cliente_service.get_cliente(d.Clientes_idClientes)
+            usuario = usuario_repo.get_by_id(cliente.Usuarios_idUsuarios)
+            if usuario:
+                nombre_cliente = usuario.nombre
+        except Exception:
+            pass  # Puedes imprimir un log si lo deseas
+
+        dataloggers_con_nombre.append({
+            "idDatalogger": d.idDatalogger,
+            "cliente_nombre": nombre_cliente,
+        })
+
+    return templates.TemplateResponse("admin-sensores.html", {
+        "request": request,
+        "nombre": nombre,
+        "dataloggers": dataloggers_con_nombre
+    })
+
+@app.get("/{nombre}/admin/datalogger/{id_datalogger}/sensores")
+async def ver_sensores_admin(
+    nombre: str,
+    id_datalogger: int,
+    request: Request,
+    sensor_service: SensorService = Depends(get_sensor_service)
+):
+    sensores = [s for s in sensor_service.get_all_sensors() if s.Datalogger_idDatalogger == id_datalogger]
+
+    return templates.TemplateResponse("admin-ver-sensores.html", {
+        "request": request,
+        "nombre": nombre,
+        "sensores": sensores,
+        "id_datalogger": id_datalogger
+    })
+
+@app.get("/{nombre}/admin/datalogger/{id_datalogger}/crear-sensor")
+def formulario_crear_sensor(
+    nombre: str,
+    id_datalogger: int,
+    request: Request,
+    datalogger_service: DataloggerService = Depends(get_datalogger_service)
+):
+    datalogger = datalogger_service.get_datalogger(id_datalogger)
+    if not datalogger:
+        raise HTTPException(status_code=404, detail="Datalogger no encontrado")
+
+    return templates.TemplateResponse("crear-sensor.html", {
+        "request": request,
+        "nombre": nombre,
+        "dataloggers": [datalogger],  # Solo uno, para precargarlo en el <select>
+        "id_datalogger": id_datalogger
     })
 
 # -------------------------------------------

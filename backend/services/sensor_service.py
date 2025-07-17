@@ -31,6 +31,7 @@ class SensorService:
         success = self.repository.delete(sensor_id)
         if not success:
             raise HTTPException(status_code=404, detail="Sensor no encontrado.")
+        
 
 def get_sensor_service() -> SensorService:
     return SensorService(SensorRepository())

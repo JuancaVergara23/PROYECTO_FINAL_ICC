@@ -42,9 +42,28 @@ class DataloggerService:
         return self.get_datalogger(datalogger_id)
 
     def delete_datalogger(self, datalogger_id: int) -> None:
+        datalogger = self.repository.get_by_id(datalogger_id)
         success = self.repository.delete(datalogger_id)
+
+        # 3. Obtener el cliente asociado
+        cliente = self.cliente_repo.get_by_id(datalogger.Clientes_idClientes)
+        if not cliente:
+            raise HTTPException(status_code=404, detail="Cliente asociado no encontrado.")
+
+        # 4. Restar 1 a n_dataloggers, asegurándote que no sea menor que 0
+        if cliente.n_dataloggers > 0:
+            cliente.n_dataloggers -= 1
+        else:
+            cliente.n_dataloggers = 0  # Evita negativos
+
+        # 5. Guardar la actualización
+        self.cliente_repo.update(cliente.idClientes, cliente)
+        
         if not success:
             raise HTTPException(status_code=404, detail="Datalogger no encontrado.")
+        
+        
+    
 
 def get_datalogger_service() -> DataloggerService:
     return DataloggerService(DataloggerRepository())
