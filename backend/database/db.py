@@ -3,25 +3,25 @@ import time
 from contextlib import contextmanager
 #localmente
 # Database configuration
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',  # Replace with your MySQL password
-    'database': 'db_agro',
-    'charset': 'utf8mb4',
-    'cursorclass': pymysql.cursors.DictCursor
-}
-
-#PARA CORRER EN LA NUBE
 # DB_CONFIG = {
-#     'host': 'db',  # el nombre del servicio del contenedor MySQL en Docker Compose
-#     'port': 3306,
+#     'host': 'localhost',
 #     'user': 'root',
-#     'password': 'root',
+#     'password': '',  # Replace with your MySQL password
 #     'database': 'db_agro',
 #     'charset': 'utf8mb4',
 #     'cursorclass': pymysql.cursors.DictCursor
 # }
+
+#PARA CORRER EN LA NUBE
+DB_CONFIG = {
+    'host': 'db',  # el nombre del servicio del contenedor MySQL en Docker Compose
+    'port': 3306,
+    'user': 'root',
+    'password': 'root',
+    'database': 'db_agro',
+    'charset': 'utf8mb4',
+    'cursorclass': pymysql.cursors.DictCursor
+}
 
 # Database connection context manager
 
