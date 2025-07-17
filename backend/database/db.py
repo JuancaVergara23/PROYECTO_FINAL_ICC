@@ -37,6 +37,17 @@ def get_db_connection():
             time.sleep(3)
     raise Exception("No se pudo conectar a la base de datos después de varios intentos.")
 
+def init_db():
+    try:
+        conn = get_db_connection()
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT 1")  # o alguna verificación mínima
+        conn.close()
+        print("✅ Conexión exitosa a la base de datos.")
+    except Exception as e:
+        print(f"❌ Error al inicializar la base de datos: {e}")
+        raise
+
 # @contextmanager
 # def get_db_connection():
 #     connection = pymysql.connect(**DB_CONFIG)
