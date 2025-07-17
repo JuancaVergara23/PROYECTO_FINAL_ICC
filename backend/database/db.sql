@@ -103,12 +103,12 @@ ENGINE = InnoDB;
 -- Creando los tipos 
 -- -----------------------------------------------------
 
-insert into tipo(nombre) values('admin');
-insert into tipo(nombre) values('cliente');
+insert into Tipo(nombre) values('admin');
+insert into Tipo(nombre) values('cliente');
 
 -- -----------------------------------------------------
 -- Creando los admins
 -- -----------------------------------------------------
 
-insert into usuarios(nombre,correo,contrasena,Tipo_idTipo) values('Juan Vergara','jvergara@gmail.com','ju@nv',1);
-insert into usuarios(nombre,correo,contrasena,Tipo_idTipo) values('Piero Pittman','ppittman@gmail.com','pi3rop',1);
+insert into Usuarios(nombre,correo,contrasena,Tipo_idTipo) values('Juan Vergara','jvergara@gmail.com','ju@nv',1);
+insert into Usuarios(nombre,correo,contrasena,Tipo_idTipo) values('Piero Pittman','ppittman@gmail.com','pi3rop',1);
