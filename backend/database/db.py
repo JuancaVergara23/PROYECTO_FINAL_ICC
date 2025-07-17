@@ -1,4 +1,5 @@
 import pymysql
+import time
 from contextlib import contextmanager
 #localmente
 # Database configuration
@@ -24,20 +25,32 @@ DB_CONFIG = {
 
 # Database connection context manager
 
-@contextmanager
 def get_db_connection():
-    connection = pymysql.connect(**DB_CONFIG)
-    try:
-        yield connection
-    finally:
-        connection.close()
+    for i in range(10):
+        try:
+            connection = pymysql.connect(
+                **DB_CONFIG
+            )
+            return connection
+        except pymysql.err.OperationalError as e:
+            print(f"Intento {i+1}: MySQL no está listo. Esperando 3 segundos...")
+            time.sleep(3)
+    raise Exception("No se pudo conectar a la base de datos después de varios intentos.")
 
-# Este init_db debería usarse solo para desarrollo
-def init_db():
-    with get_db_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT 1")  # Verifica la conexión
-        print("✅ Conexión exitosa a la base de datos.")
+# @contextmanager
+# def get_db_connection():
+#     connection = pymysql.connect(**DB_CONFIG)
+#     try:
+#         yield connection
+#     finally:
+#         connection.close()
+
+# # Este init_db debería usarse solo para desarrollo
+# def init_db():
+#     with get_db_connection() as conn:
+#         with conn.cursor() as cursor:
+#             cursor.execute("SELECT 1")  # Verifica la conexión
+#         print("✅ Conexión exitosa a la base de datos.")
 
 # Initialize database
 # def init_db():
