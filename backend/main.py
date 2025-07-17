@@ -388,6 +388,26 @@ def formulario_crear_sensor(
         "id_datalogger": id_datalogger
     })
 
+@app.get("/{nombre}/admin/sensor/{id_sensor}/mediciones")
+async def mostrar_mediciones_por_sensor(
+    nombre: str,
+    id_sensor: int,
+    request: Request,
+    service: MedicionService = Depends(get_medicion_service),
+    sensor_service: SensorService = Depends(get_sensor_service),
+    datalogger_service: DataloggerService = Depends(get_datalogger_service)
+):
+
+    # Obtener mediciones asociadas al sensor
+    mediciones = service.get_mediciones_by_sensor(id_sensor)
+
+    # Retornar template con los datos
+    return templates.TemplateResponse("ver-mediciones.html", {
+        "request": request,
+        "mediciones": mediciones,
+        "id_sensor": id_sensor,
+        "nombre": nombre
+    })
 # -------------------------------------------
 # Dashboard Cliente
 # -------------------------------------------
@@ -435,6 +455,7 @@ async def formulario_crear_datalogger(nombre: str, request: Request):
         "cliente_id": cliente_id,
         "nombre": nombre
     })
+
 
 # -------------------------------------------
 # Sensores

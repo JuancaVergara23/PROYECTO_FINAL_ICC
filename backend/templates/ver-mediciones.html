@@ -34,7 +34,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/home/{{ nombre }}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin/home/{{ nombre }}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -46,7 +46,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="/home/{{ nombre }}">
+                <a class="nav-link" href="/admin/home/{{ nombre }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -56,11 +56,34 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                Usuarios
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item ">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Clientes</span>
+                </a>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Opciones :</h6>
+                        <a class="collapse-item" href="/{{ nombre }}/admin/clientes">Ver Clientes</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Dispositivos
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
@@ -68,14 +91,15 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item" href="/{{ nombre }}/dataloggers/datos">Tabla</a>
+                        <h6 class="collapse-header">Opciones :</h6>
+                        <a class="collapse-item" href="/{{ nombre }}/admin/admin-dataloggers">Asignar Dataloggers</a>
+                        <a class="collapse-item" href="/{{ nombre }}/admin/ver-dataloggers">Ver Dataloggers</a>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -85,11 +109,11 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones:</h6>
-                        <a class="collapse-item active" href="/{{ nombre }}/sensores/datos">Tabla</a>
-
+                        <a class="collapse-item" href="/{{ nombre }}/admin/admin-sensores">Asignar Sensores</a>
                     </div>
                 </div>
             </li>
+
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -318,13 +342,13 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Mediciones</h1>
-                    <p class="mb-4">Esta tabla muestra las mediciones del sensor seleccionado</p>
+                    <h1 class="h3 mb-2 text-gray-800">Ver Mediciones </h1>
+                    <p class="mb-4">Esta tabla muestra las mediciones registradas a cada sensor.</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tabla de Mediciones</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Mediciones</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -339,6 +363,7 @@
                                             <th>Potasio(K)</th>
                                             <th>Fósforo(P)</th>
                                             <th>Fecha y Tiempo</th>
+                                        </tr>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -423,6 +448,7 @@
 
     <!-- Page level custom scripts -->
     <script src="/static/js/demo/datatables-demo.js"></script>
+
 
 </body>
 
